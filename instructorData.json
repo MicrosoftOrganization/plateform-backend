@@ -1,0 +1,73 @@
+[
+    {
+        "id":1,
+        "name": "Fakher Ben Neila",
+        "email": "neilafakher8@gmail.com",
+        "position": "Basic Web Instructor",
+        "DepartmentId":"670792e3ee0e13424434d371"
+    },
+    {
+        "id":2,
+        "name": "Mohamed Ali Alkahwi",
+        "email": "mohamedalielkahwi@gmail.com",
+        "position": "Basic Web Instructor",
+        "DepartmentId":"670792e3ee0e13424434d371"
+    },
+    {
+        "id":3,
+        "name": "Ranim Haouech",
+        "email": "haouechranim@gmail.com",
+        "position": "Basic Web Instructor",
+        "DepartmentId":"670792e3ee0e13424434d371"
+    },  
+    {
+        "id":4,
+        "name": "Med Amine Slama",
+        "email": "mohammedaminslama@gmail.com",
+        "position": "Intermediate Web Instructor",
+        "DepartmentId":"670ae2f9684fce305e8e8348"
+    },
+    {
+        "id":5,
+        "name": "Nouri Chairet",
+        "email": "nouric576@gmail.com",
+        "position": "Intermediate Web Instructor",
+        "DepartmentId":"670ae2f9684fce305e8e8348"
+    },
+    {
+        "id":6,
+        "name": "Firas Halouani",
+        "email": "firashalouani270@gmail.com",
+        "position": "Intermediate Web Instructor",
+        "DepartmentId":"670ae2f9684fce305e8e8348"
+    },
+    
+    {
+        "id":7,
+        "name": "Mariam Tlatli",
+        "email": "tlatlimariem3@gmail.com",
+        "position": "Advanced Web Instructor",
+        "DepartmentId":"670bedc344886445be846ec5"
+    },
+    {
+        "id":8,
+        "name": "Khaled Balti",
+        "email": "khaledbalti00001@gmail.com",
+        "position": "Advanced Web Instructor",
+        "DepartmentId":"670bedc344886445be846ec5"
+    },
+    {
+        "id":9,
+        "name": "Salwa Mekni",
+        "email": "salwamekni8@gmail.com",
+        "position": "AI Instructor",
+        "DepartmentId":"6754f4cff1f2e70bdd460af4"
+    },
+    {
+        "id":10,
+        "name": "Wissem Karous",
+        "email": "karouswissem@gmail.com",
+        "position": "AI Instructor",
+        "DepartmentId":"6754f4cff1f2e70bdd460af4"
+    }
+]
