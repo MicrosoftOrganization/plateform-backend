@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
 const responsesSchema = new mongoose.Schema({
   // make sure to link the assignment to the response schema
@@ -8,31 +8,31 @@ const responsesSchema = new mongoose.Schema({
 
   Content: {
     type: String,
-    required: true
+    required: true,
   },
   User_id: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Member',
-    required: true
+    ref: "Member",
+    required: true,
   },
   Assignment_id: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Assignment',
-    required: true
+    ref: "Assignment",
+    required: true,
   },
   status: {
     type: String,
-    enum: ['AWAITING FOR REVIEW', 'APPROVED'],
-    default: 'AWAITING FOR REVIEW', // Valeur par défaut
-    required: true
+    enum: ["AWAITING FOR REVIEW", "APPROVED", "EDITED"],
+    default: "AWAITING FOR REVIEW", // Valeur par défaut
+    required: true,
   },
   createdAt: {
     type: Date,
-    default: Date.now
-  }
-})
+    default: Date.now,
+  },
+});
 // Assurer qu'un utilisateur ne peut soumettre qu'une seule réponse pour un assignment donné
-responsesSchema.index({ User_id: 1, Assignment_id: 1 }, { unique: true })
+responsesSchema.index({ User_id: 1, Assignment_id: 1 }, { unique: true });
 
-const Response = mongoose.model('Response', responsesSchema)
-module.exports = Response
+const Response = mongoose.model("Response", responsesSchema);
+module.exports = Response;

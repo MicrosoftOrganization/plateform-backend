@@ -1,7 +1,7 @@
-const express = require('express')
-const response_controller = require('../controllers/response_controller')
+const express = require("express");
+const response_controller = require("../controllers/response_controller");
 
-const route = express.Router()
+const route = express.Router();
 
 /**
  * @swagger
@@ -21,7 +21,7 @@ const route = express.Router()
  *       500:
  *         description: Erreur serveur lors de la récupération des réponses
  */
-route.get('/responses', response_controller.Display_All)
+route.get("/responses", response_controller.Display_All);
 
 /**
  * @swagger
@@ -49,9 +49,9 @@ route.get('/responses', response_controller.Display_All)
  *         description: Erreur serveur lors de la récupération des réponses
  */
 route.get(
-  '/responsesByAssignment/:Assignment_id',
+  "/responsesByAssignment/:Assignment_id",
   response_controller.Display_Responses_By_Assignment_Id
-)
+);
 
 /**
  * @swagger
@@ -92,7 +92,7 @@ route.get(
  *       500:
  *         description: Erreur serveur lors de la création de la réponse
  */
-route.post('/responses', response_controller.create_Response)
+route.post("/responses", response_controller.create_Response);
 
 /**
  * @swagger
@@ -152,10 +152,72 @@ route.post('/responses', response_controller.create_Response)
  *                   type: string
  */
 route.get(
-  '/responsesByAssignmentIdAndUserId',
+  "/responsesByAssignmentIdAndUserId",
   response_controller.Fetch_Response_By_Assignment_And_User
-)
-
+);
+/**
+ * @swagger
+ * /api/response/update/updateStatus/{id}:
+ *   put:
+ *     summary: Mettre à jour une réponse
+ *     tags: [Responses]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID de la réponse à mettre à jour
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               status:
+ *                 type: string
+ *                 description: Statut de la réponse
+ *                 example: "APPROVED"
+ *     responses:
+ *       200:
+ *         description: Réponse mise à jour avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Réponse mise à jour avec succès"
+ *       404:
+ *         description: Réponse non trouvée ou aucune modification effectuée
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Réponse non trouvée ou aucune modification effectuée."
+ *       500:
+ *         description: Erreur interne du serveur
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Erreur serveur lors de la mise à jour de la réponse"
+ *                 error:
+ *                   type: string
+ *                   example: "Détail de l'erreur"
+ */
+route.put(
+  "/update/updateStatus/:id",
+  response_controller.update_Response_Status_By_Instructor
+);
 /**
  * @swagger
  * /api/response/update/{id}:
@@ -219,7 +281,8 @@ route.get(
  *                   type: string
  *                   example: "Détail de l'erreur"
  */
-route.put('/update/:id', response_controller.update_Response_By_Member)
+route.put("/update/:id", response_controller.update_Response_By_Member);
+
 // pas encore implementer
 /**
  * @swagger
@@ -272,7 +335,7 @@ route.put('/update/:id', response_controller.update_Response_By_Member)
  *                   type: string
  *                   example: "Détails de l'erreur"
  */
-route.delete('/:id', response_controller.delete_Response)
+route.delete("/:id", response_controller.delete_Response);
 /**
  * @swagger
  * /api/response/{id}:
@@ -333,6 +396,6 @@ route.delete('/:id', response_controller.delete_Response)
  *                   type: string
  *                   example: "Détails de l'erreur"
  */
-route.get('/:id', response_controller.findResponsebyId)
+route.get("/:id", response_controller.findResponsebyId);
 
-module.exports = route
+module.exports = route;
