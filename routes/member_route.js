@@ -1,7 +1,7 @@
-const express = require('express')
-const route = express.Router()
-const MemberController = require('../controllers/member_controller')
-const authenticateJWT = require('../middlewares/VerifyToken')
+const express = require("express");
+const route = express.Router();
+const MemberController = require("../controllers/member_controller");
+const authenticateJWT = require("../middlewares/VerifyToken");
 
 /**
  * @swagger
@@ -63,7 +63,7 @@ const authenticateJWT = require('../middlewares/VerifyToken')
  *                   type: string
  *                   description: Détail de l'erreur
  */
-route.get('/all/:departmentId', MemberController.afficher_All)
+route.get("/all/:departmentId", MemberController.afficher_All);
 /**
  * @swagger
  * /api/member/admin/all:
@@ -117,7 +117,7 @@ route.get('/all/:departmentId', MemberController.afficher_All)
  *                   type: string
  *                   description: Détail de l'erreur
  */
-route.get('/admin/all', MemberController.afficher_All_For_Admin)
+route.get("/admin/all", MemberController.afficher_All_For_Admin);
 /**
  * @swagger
  * /api/member/get-members-names:
@@ -150,7 +150,7 @@ route.get('/admin/all', MemberController.afficher_All_For_Admin)
  *                   type: string
  *                   example: "Error in finding members"
  */
-route.get('/get-members-names', MemberController.get_members_names)
+route.get("/get-members-names", MemberController.get_members_names);
 /**
  * @swagger
  * /api/member/update/{id}:
@@ -179,7 +179,7 @@ route.get('/get-members-names', MemberController.get_members_names)
  *       200:
  *         description: Membre mis à jour avec succès
  */
-route.put('/update/:id', MemberController.update_Member)
+route.put("/update/:id", MemberController.update_Member);
 /**
  * @swagger
  * /api/member/delete/{id}:
@@ -198,7 +198,7 @@ route.put('/update/:id', MemberController.update_Member)
  *       200:
  *         description: Membre supprimé avec succès
  */
-route.delete('/delete/:id', MemberController.delete_Member)
+route.delete("/delete/:id", MemberController.delete_Member);
 /**
  * @swagger
  * /api/member/create:
@@ -299,7 +299,7 @@ route.delete('/delete/:id', MemberController.delete_Member)
  *                   type: string
  *                   example: "Error in creating Member"
  */
-route.post('/create', MemberController.create_Member)
+route.post("/create", MemberController.create_Member);
 /*remarque DepartmentIds soit string soit array string les deux fonctionnent correctement
 /* Fin Members */
 
@@ -382,7 +382,102 @@ route.post('/create', MemberController.create_Member)
  *                   type: string
  *                   description: Détails de l'erreur
  */
-route.post('/create-members', MemberController.create_Members)
+route.post("/create-members", MemberController.create_Members);
+/**
+ * @swagger
+ * /api/member/upload-many-members:
+ *   post:
+ *     summary: Créer plusieurs membres via un fichier upload (superAdmin)
+ *     tags:
+ *       - Member-SuperAdmin
+ *     description: Cette route permet au superAdmin de créer plusieurs membres en une seule requête.
+ *     requestBody:
+ *       description: Les informations des membres à créer (tableau d'objets JSON)
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: array
+ *             items:
+ *               type: object
+ *               properties:
+ *                 NomPrenom:
+ *                   type: string
+ *                   description: Le nom et prénom du membre
+ *                   example: "John Doe"
+ *                 Email:
+ *                   type: string
+ *                   format: email
+ *                   description: L'adresse email du membre
+ *                   example: "johndoe@example.com"
+ *                 Password:
+ *                   type: string
+ *                   description: Le mot de passe du membre (minimum 8 caractères)
+ *                   minLength: 8
+ *                   example: "mypassword123"
+ *                 Adresse:
+ *                   type: string
+ *                   description: L'adresse complète du membre
+ *                   example: "123 rue Exemple, Paris, France"
+ *                 ImageLink:
+ *                   type: string
+ *                   format: uri
+ *                   description: L'URL de l'image du membre (facultatif)
+ *                   example: "https://example.com/images/johndoe.jpg"
+ *                 DepartmentIds:
+ *                   type: string
+ *                   description: L'identifiant ObjectId du département du membre
+ *                   example: "60f792e3ee0e13424434d371"
+ *               required:
+ *                 - NomPrenom
+ *                 - Email
+ *                 - Password
+ *                 - Adresse
+ *                 - DepartmentIds
+ *     responses:
+ *       201:
+ *         description: Membres créés avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Members created successfully"
+ *                 Members:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Member'
+ *       400:
+ *         description: Champs requis manquants ou données invalides
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Missing required fields"
+ *                 details:
+ *                   type: string
+ *                   example: "Email is required"
+ *       500:
+ *         description: Erreur interne lors de la création des membres
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Error in creating members"
+ *                 error:
+ *                   type: string
+ *                   description: Détails de l'erreur
+ *                   example: "Database connection failed"
+ */
+route.post("/upload-many-members", MemberController.upload_many_members);
 
 /**
  * @swagger
@@ -411,7 +506,7 @@ route.post('/create-members', MemberController.create_Members)
  *                 name:
  *                   type: string
  */
-route.get('/find/:id', MemberController.findMember)
+route.get("/find/:id", MemberController.findMember);
 
 /**
  * @swagger
@@ -431,6 +526,6 @@ route.get('/find/:id', MemberController.findMember)
  *                 count:
  *                   type: string
  */
-route.get('/count', MemberController.count)
+route.get("/count", MemberController.count);
 
-module.exports = route
+module.exports = route;

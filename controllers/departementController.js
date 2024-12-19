@@ -60,7 +60,7 @@ const controller = {
     const id = req.params.id
     const deleted = await department.deleteOne({ _id: id })
     if (deleted.deletedCount === 0) {
-      return res.status(404).json({ message: 'Departement not found' })
+      return res.status(404).json({ message: 'Department not found' })
     }
     res.status(200).json({ message: 'Departement deleted successfully' })
   },
