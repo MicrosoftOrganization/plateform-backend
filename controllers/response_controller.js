@@ -1,5 +1,6 @@
 const Response = require("./../models/response");
 const Assignment = require("../models/assignment");
+const mongoose = require("mongoose");
 
 const controller = {
   // Afficher toutes les réponses
@@ -86,7 +87,7 @@ const controller = {
       if (existingResponse) {
         return res.status(400).json({
           message:
-            "L'utilisateur a déjà soumis une réponse pour cet assignment.",
+            "The user has already submitted an answer for this assignment.",
         });
       }
 
@@ -238,6 +239,43 @@ const controller = {
     } catch (error) {
       res.status(500).json({
         message: "Erreur serveur lors de la récupération des réponses",
+        error: error.message,
+      });
+    }
+  },
+
+  // a mettre dans le dashboard member sans swagger avec postman
+  getResponseStatsByMember: async (req, res) => {
+    try {
+      const { memberId } = req.params;
+
+      // Agrégation pour compter les réponses par statut et le total
+      const responseStats = await Response.aggregate([
+        {
+          $match: {
+            User_id: new mongoose.Types.ObjectId(memberId), // Filtrer par l'ID du membre
+          },
+        },
+        {
+          $group: {
+            _id: "$status", // Grouper par le champ "status"
+            count: { $sum: 1 }, // Compter le nombre de réponses pour chaque statut
+          },
+        },
+      ]);
+
+      // Ajouter le total des réponses
+      const totalResponses = await Response.countDocuments({
+        User_id: new  mongoose.Types.ObjectId(memberId),
+      });
+
+      res.status(200).json({
+        totalResponses,
+        responsesByStatus: responseStats,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: "Error retrieving response stats",
         error: error.message,
       });
     }
