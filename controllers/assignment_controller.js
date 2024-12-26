@@ -2,16 +2,17 @@ const Assignment = require("../models/assignment");
 const { department } = require("../models/department");
 
 const assignmentController = {
+  // a tester order
   Member_get_assignments_of_his_department: async (req, res) => {
     try {
       const { departmentId } = req.params;
 
-      // Vérifiez si le département existe et peupler les assignments directement
       const departmentExists = await department
         .findById(departmentId)
         .populate({
-          path: "assignments", // Nom du champ assignments dans le modèle department
-          select: "Title Description DueDate Attachments", // Champs à peupler dans Assignment
+          path: "assignments",
+          select: "Title Description DueDate Attachments",
+          options: { sort: { createdAt: -1 } },
         });
 
       if (!departmentExists) {
@@ -75,23 +76,22 @@ const assignmentController = {
       res.status(500).json({ message: error.message });
     }
   },
+  // à tester plus tard et à modifier les paramètre de la request dans le front
   deleteAssignment: async (req, res) => {
     try {
-      const { id } = req.params;
-      const assignement = await Assignment.findById(id);
+      const { assignmentId, departmentId } = req.params;
+      const assignement = await Assignment.findById(assignmentId);
       if (assignement) {
-        const departement = await department.findById(
-          assignement.DepartementId
-        );
+        const departement = await department.findById(departmentId);
         if (!departement) {
-          throw new Error("Departement not found 2451 ");
+          throw new Error("Department not found ");
         }
         console.log("dep", departement.assignments);
         departement.assignments = departement.assignments.filter(
-          (Element) => Element.toString() !== id
+          (Element) => Element.toString() !== assignmentId
         );
         await departement.save();
-        await Assignment.deleteOne({ _id: id });
+        await Assignment.deleteOne({ _id: assignmentId });
       }
       res.status(200).json({ message: "Assignment deleted successfully" });
     } catch (error) {
