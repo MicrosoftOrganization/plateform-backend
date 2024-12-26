@@ -1,7 +1,11 @@
-const express = require('express')
-const superAdminController = require('../controllers/super_admin_controller')
+const express = require("express");
+const superAdminController = require("../controllers/super_admin_controller");
+const {
+  authenticateJWT,
+  authorizeRoles,
+} = require("../middlewares/VerifyToken");
 
-const route = express.Router()
+const route = express.Router();
 /**
  * @swagger
  * /api/super_admin/create:
@@ -77,5 +81,5 @@ const route = express.Router()
  *                   type: string
  *                   description: Détails de l'erreur
  */
-route.post('/create', superAdminController.create_Admin)
-module.exports = route
+route.post("/create", superAdminController.create_Admin);
+module.exports = route;

@@ -1,10 +1,14 @@
 // backend/routes/upload_route.js
-const express = require('express')
-const multer = require('multer')
-const uploadController = require('../controllers/upload_controller') // Import du contrôleur
+const express = require("express");
+const multer = require("multer");
+const uploadController = require("../controllers/upload_controller");
+const {
+  authenticateJWT,
+  authorizeRoles,
+} = require("../middlewares/VerifyToken");
 
-const route = express.Router()
-const upload = multer({ storage: multer.memoryStorage() })
+const route = express.Router();
+const upload = multer({ storage: multer.memoryStorage() });
 
 /**
  * @swagger
@@ -60,7 +64,14 @@ const upload = multer({ storage: multer.memoryStorage() })
  *                   type: string
  *                   example: "Error during file conversion"
  */
-route.post('/upload', upload.single('file'), uploadController.uploadFile)
+route.post(
+  "/upload",
+  authenticateJWT,
+  authorizeRoles("superAdmin"),
+  upload.single("file"),
+  uploadController.uploadFile
+);
+
 /**
  * @swagger
  * /api/test/save-instructor:
@@ -157,6 +168,11 @@ route.post('/upload', upload.single('file'), uploadController.uploadFile)
  *               type: string
  *               example: "An error occurred while saving instructor"
  */
-route.post('/save-instructor', uploadController.saveFileInstructor)
+route.post(
+  "/save-instructor",
+  authenticateJWT,
+  authorizeRoles("superAdmin"),
+  uploadController.saveFileInstructor
+);
 
-module.exports = route
+module.exports = route;

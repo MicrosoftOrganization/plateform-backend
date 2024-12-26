@@ -1,7 +1,10 @@
-const express = require('express')
-const router = express.Router() // Fixed the variable name to router instead of route
-const departementController = require('../controllers/departementController')
-
+const express = require("express");
+const router = express.Router(); // Fixed the variable name to router instead of route
+const departementController = require("../controllers/departementController");
+const {
+  authenticateJWT,
+  authorizeRoles,
+} = require("../middlewares/VerifyToken");
 /**
  * @swagger
  * /api/department/all:
@@ -28,7 +31,12 @@ const departementController = require('../controllers/departementController')
  *       404:
  *         description: Erreur lors de la récupération des départements
  */
-router.get('/all', departementController.afficher_All)
+router.get(
+  "/all",
+  authenticateJWT,
+  authorizeRoles("superAdmin"),
+  departementController.afficher_All
+);
 
 /**
  * @swagger
@@ -52,7 +60,12 @@ router.get('/all', departementController.afficher_All)
  *       201:
  *         description: Département créé avec succès
  */
-router.post('/create', departementController.create_Departement)
+router.post(
+  "/create",
+  authenticateJWT,
+  authorizeRoles("superAdmin"),
+  departementController.create_Departement
+);
 /**
  * @swagger
  * /api/department/update/{id}:
@@ -95,7 +108,12 @@ router.post('/create', departementController.create_Departement)
  *       404:
  *         description: Département non trouvé ou aucune modification effectuée
  */
-router.put('/update/:id', departementController.updateDepartement)
+router.put(
+  "/update/:id",
+  authenticateJWT,
+  authorizeRoles("superAdmin"),
+  departementController.updateDepartement
+);
 /**
  * @swagger
  * /api/department/delete/{id}:
@@ -132,7 +150,12 @@ router.put('/update/:id', departementController.updateDepartement)
  *                   type: string
  *                   description: Message d'erreur indiquant que le département est introuvable
  */
-router.delete('/delete/:id', departementController.deleteDepartement)
+router.delete(
+  "/delete/:id",
+  authenticateJWT,
+  authorizeRoles("superAdmin"),
+  departementController.deleteDepartement
+);
 /**
  * @swagger
  * /api/department/names-ids:
@@ -159,5 +182,10 @@ router.delete('/delete/:id', departementController.deleteDepartement)
  *       500:
  *         description: Erreur lors de la récupération des départements
  */
-router.get('/names-ids', departementController.get_Departments_names_and_ids)
-module.exports = router
+router.get(
+  "/names-ids",
+  authenticateJWT,
+  authorizeRoles("member", "superAdmin"),
+  departementController.get_Departments_names_and_ids
+);
+module.exports = router;

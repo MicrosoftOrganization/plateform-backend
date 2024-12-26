@@ -1,7 +1,10 @@
 const express = require("express");
 const route = express.Router();
 const MemberController = require("../controllers/member_controller");
-const authenticateJWT = require("../middlewares/VerifyToken");
+const {
+  authenticateJWT,
+  authorizeRoles,
+} = require("../middlewares/VerifyToken");
 
 /**
  * @swagger
@@ -63,7 +66,12 @@ const authenticateJWT = require("../middlewares/VerifyToken");
  *                   type: string
  *                   description: Détail de l'erreur
  */
-route.get("/all/:departmentId", MemberController.afficher_All);
+route.get(
+  "/all/:departmentId",
+  authenticateJWT,
+  authorizeRoles("member", "instructor", "superAdmin"),
+  MemberController.afficher_All
+);
 /**
  * @swagger
  * /api/member/admin/all:
@@ -117,7 +125,11 @@ route.get("/all/:departmentId", MemberController.afficher_All);
  *                   type: string
  *                   description: Détail de l'erreur
  */
-route.get("/admin/all", MemberController.afficher_All_For_Admin);
+route.get(
+  "/admin/all",
+  authorizeRoles("superAdmin"),
+  MemberController.afficher_All_For_Admin
+);
 /**
  * @swagger
  * /api/member/get-members-names:
@@ -150,7 +162,11 @@ route.get("/admin/all", MemberController.afficher_All_For_Admin);
  *                   type: string
  *                   example: "Error in finding members"
  */
-route.get("/get-members-names", MemberController.get_members_names);
+route.get(
+  "/get-members-names",
+  authorizeRoles("instructor", "superAdmin"),
+  MemberController.get_members_names
+);
 /**
  * @swagger
  * /api/member/update/{id}:
@@ -179,7 +195,11 @@ route.get("/get-members-names", MemberController.get_members_names);
  *       200:
  *         description: Membre mis à jour avec succès
  */
-route.put("/update/:id", MemberController.update_Member);
+route.put(
+  "/update/:id",
+  authorizeRoles("instructor", "superAdmin"),
+  MemberController.update_Member
+);
 /**
  * @swagger
  * /api/member/delete/{id}:
@@ -198,7 +218,11 @@ route.put("/update/:id", MemberController.update_Member);
  *       200:
  *         description: Membre supprimé avec succès
  */
-route.delete("/delete/:id", MemberController.delete_Member);
+route.delete(
+  "/delete/:id",
+  authorizeRoles("instructor", "superAdmin"),
+  MemberController.delete_Member
+);
 /**
  * @swagger
  * /api/member/create:
@@ -299,7 +323,11 @@ route.delete("/delete/:id", MemberController.delete_Member);
  *                   type: string
  *                   example: "Error in creating Member"
  */
-route.post("/create", MemberController.create_Member);
+route.post(
+  "/create",
+  authorizeRoles("superAdmin"),
+  MemberController.create_Member
+);
 /*remarque DepartmentIds soit string soit array string les deux fonctionnent correctement
 /* Fin Members */
 
@@ -382,7 +410,11 @@ route.post("/create", MemberController.create_Member);
  *                   type: string
  *                   description: Détails de l'erreur
  */
-route.post("/create-members", MemberController.create_Members);
+route.post(
+  "/create-members",
+  authorizeRoles("superAdmin"),
+  MemberController.create_Members
+);
 /**
  * @swagger
  * /api/member/upload-many-members:
@@ -477,7 +509,11 @@ route.post("/create-members", MemberController.create_Members);
  *                   description: Détails de l'erreur
  *                   example: "Database connection failed"
  */
-route.post("/upload-many-members", MemberController.upload_many_members);
+route.post(
+  "/upload-many-members",
+  authorizeRoles("superAdmin"),
+  MemberController.upload_many_members
+);
 
 /**
  * @swagger

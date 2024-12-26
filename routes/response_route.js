@@ -2,6 +2,17 @@ const express = require("express");
 const response_controller = require("../controllers/response_controller");
 
 const route = express.Router();
+const {
+  authenticateJWT,
+  authorizeRoles,
+} = require("../middlewares/VerifyToken");
+
+route.get(
+  "/status/:memberId",
+  authenticateJWT,
+  authorizeRoles("member", "superAdmin"),
+  response_controller.getResponseStatsByMember
+);
 
 /**
  * @swagger
@@ -21,7 +32,12 @@ const route = express.Router();
  *       500:
  *         description: Erreur serveur lors de la récupération des réponses
  */
-route.get("/responses", response_controller.Display_All);
+route.get(
+  "/responses",
+  authenticateJWT,
+  authorizeRoles("instructor", "superAdmin"),
+  response_controller.Display_All
+);
 
 /**
  * @swagger
@@ -50,6 +66,8 @@ route.get("/responses", response_controller.Display_All);
  */
 route.get(
   "/responsesByAssignment/:Assignment_id",
+  authenticateJWT,
+  authorizeRoles("member", "instructor", "superAdmin"),
   response_controller.Display_Responses_By_Assignment_Id
 );
 
@@ -92,7 +110,12 @@ route.get(
  *       500:
  *         description: Erreur serveur lors de la création de la réponse
  */
-route.post("/responses", response_controller.create_Response);
+route.post(
+  "/responses",
+  authenticateJWT,
+  authorizeRoles("member", "superAdmin"),
+  response_controller.create_Response
+);
 
 /**
  * @swagger
@@ -153,6 +176,8 @@ route.post("/responses", response_controller.create_Response);
  */
 route.get(
   "/responsesByAssignmentIdAndUserId",
+  authenticateJWT,
+  authorizeRoles("member", "instructor", "superAdmin"),
   response_controller.Fetch_Response_By_Assignment_And_User
 );
 /**
@@ -216,6 +241,8 @@ route.get(
  */
 route.put(
   "/update/updateStatus/:id",
+  authenticateJWT,
+  authorizeRoles("instructor", "superAdmin"),
   response_controller.update_Response_Status_By_Instructor
 );
 /**
@@ -281,7 +308,12 @@ route.put(
  *                   type: string
  *                   example: "Détail de l'erreur"
  */
-route.put("/update/:id", response_controller.update_Response_By_Member);
+route.put(
+  "/update/:id",
+  authenticateJWT,
+  authorizeRoles("member"),
+  response_controller.update_Response_By_Member
+);
 
 // pas encore implementer
 /**

@@ -1,6 +1,10 @@
-const express = require('express')
-const route = express.Router()
-const assignmentController = require('../controllers/assignment_controller')
+const express = require("express");
+const route = express.Router();
+const assignmentController = require("../controllers/assignment_controller");
+const {
+  authenticateJWT,
+  authorizeRoles,
+} = require("../middlewares/VerifyToken");
 
 /**
  * @swagger
@@ -36,9 +40,11 @@ const assignmentController = require('../controllers/assignment_controller')
  *         description: Département non trouvé ou erreurs lors de la récupération des assignments
  */
 route.get(
-  '/department/:departmentId',
+  "/department/:departmentId",
+  authenticateJWT,
+  authorizeRoles("member", "instructor", "superAdmin"),
   assignmentController.Member_get_assignments_of_his_department
-)
+);
 
 /**
  * @swagger
@@ -127,9 +133,11 @@ route.get(
  *                   example: "Internal server error"
  */
 route.post(
-  '/department/:departmentId/addAssignment',
+  "/department/:departmentId/addAssignment",
+  authenticateJWT,
+  authorizeRoles("instructor", "superAdmin"),
   assignmentController.addAssignment
-)
+);
 
 /**
  * @swagger
@@ -196,7 +204,12 @@ route.post(
  *       500:
  *         description: Erreur serveur
  */
-route.put('/updateAssignment/:id', assignmentController.updateAssignment)
+route.put(
+  "/updateAssignment/:id",
+  authenticateJWT,
+  authorizeRoles("instructor", "superAdmin"),
+  assignmentController.updateAssignment
+);
 
 /**
  * @swagger
@@ -244,7 +257,12 @@ route.put('/updateAssignment/:id', assignmentController.updateAssignment)
  *                   type: string
  *                   description: Message détaillant l'erreur survenue
  */
-route.delete('/deleteAssignment/:id', assignmentController.deleteAssignment)
+route.delete(
+  "/deleteAssignment/:assignmentId/:departmentId",
+  authenticateJWT,
+  authorizeRoles("instructor", "superAdmin"),
+  assignmentController.deleteAssignment
+);
 
 /**
  * @swagger
@@ -266,7 +284,12 @@ route.delete('/deleteAssignment/:id', assignmentController.deleteAssignment)
  *       404:
  *         description: Erreur lors de la récupération des membres
  */
-route.get('/getAssignments', assignmentController.getAssignments)
+route.get(
+  "/getAssignments",
+  authenticateJWT,
+  authorizeRoles("instructor", "superAdmin", "member"),
+  assignmentController.getAssignments
+);
 
 /**
  * @swagger
@@ -311,6 +334,6 @@ route.get('/getAssignments', assignmentController.getAssignments)
  *                   type: string
  *                   example: "Internal server error"
  */
-route.get('/getAssignmentById/:id', assignmentController.getAssignmentById)
+route.get("/getAssignmentById/:id", assignmentController.getAssignmentById);
 
-module.exports = route
+module.exports = route;

@@ -1,7 +1,11 @@
-const express = require('express')
-const route = express.Router()
+const express = require("express");
+const route = express.Router();
 
-const instructorController = require('../controllers/instructor_controller')
+const instructorController = require("../controllers/instructor_controller");
+const {
+  authenticateJWT,
+  authorizeRoles,
+} = require("../middlewares/VerifyToken");
 
 /**
  * @swagger
@@ -41,7 +45,12 @@ const instructorController = require('../controllers/instructor_controller')
  *                   type: string
  *                   description: Message d'erreur.
  */
-route.get('/all', instructorController.afficher_All)
+route.get(
+  "/all",
+  authenticateJWT,
+  authorizeRoles("superAdmin"),
+  instructorController.afficher_All
+);
 /**
  * @swagger
  * /api/instructor/create-with-department:
@@ -140,9 +149,11 @@ route.get('/all', instructorController.afficher_All)
  *                   example: "Error adding instructor to department"
  */
 route.post(
-  '/create-with-department',
+  "/create-with-department",
+  authenticateJWT,
+  authorizeRoles("superAdmin"),
   instructorController.create_Instructor_with_department
-)
+);
 /**
  * @swagger
  * /api/instructor/update/{id}:
@@ -243,7 +254,12 @@ route.post(
  *                   type: string
  *                   example: "Source Department not found"
  */
-route.put('/update/:id', instructorController.update_Instructor)
+route.put(
+  "/update/:id",
+  authenticateJWT,
+  authorizeRoles("superAdmin"),
+  instructorController.update_Instructor
+);
 
 /**
  * @swagger
@@ -293,7 +309,12 @@ route.put('/update/:id', instructorController.update_Instructor)
  *                   type: string
  *                   example: "Error in deleting Admin"
  */
-route.delete('/delete/:id', instructorController.delete_Instructor)
+route.delete(
+  "/delete/:id",
+  authenticateJWT,
+  authorizeRoles("superAdmin"),
+  instructorController.delete_Instructor
+);
 
 /**
  * @swagger
@@ -365,9 +386,11 @@ route.delete('/delete/:id', instructorController.delete_Instructor)
  *                     example: "Erreur serveur"
  */
 route.post(
-  '/get-instructors-names',
+  "/get-instructors-names",
+  authenticateJWT,
+  authorizeRoles("instructor", "superAdmin"),
   instructorController.get_Instructors_names_and_ids_in_department
-)
+);
 /**
  * @swagger
  * /api/instructor/find/{id}:
@@ -433,7 +456,7 @@ route.post(
  *                   type: string
  *                   example: "Error in finding instructor"
  */
-route.get('/find/:id', instructorController.findInstructor)
+route.get("/find/:id", instructorController.findInstructor);
 
 /**
  * @swagger
@@ -462,6 +485,6 @@ route.get('/find/:id', instructorController.findInstructor)
  *                   type: string
  *                   example: "Error in counting instructors"
  */
-route.get('/count', instructorController.count)
+route.get("/count", instructorController.count);
 
-module.exports = route
+module.exports = route;

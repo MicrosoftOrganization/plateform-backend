@@ -1,7 +1,18 @@
-const express = require('express')
-const route = express.Router()
-const SessionController = require('../controllers/session_controller')
-const { Member } = require('../models/user')
+const express = require("express");
+const route = express.Router();
+const SessionController = require("../controllers/session_controller");
+const { Member } = require("../models/user");
+const {
+  authenticateJWT,
+  authorizeRoles,
+} = require("../middlewares/VerifyToken");
+
+route.get(
+  "/LastSession/:departmentId",
+  authenticateJWT,
+  authorizeRoles("member", "instructor", "superAdmin"),
+  SessionController.getLastSessionByDepartment
+);
 
 /**
  * @swagger
@@ -104,9 +115,11 @@ const { Member } = require('../models/user')
  *                   example: "Error adding session to department"
  */
 route.post(
-  '/add-session-in-department',
+  "/add-session-in-department",
+  authenticateJWT,
+  authorizeRoles("instructor", "superAdmin"),
   SessionController.Instructor_add_Session_In_department
-)
+);
 /**
  * @swagger
  * /api/session/Instructor_modify_Session_In_department:
@@ -206,9 +219,11 @@ route.post(
  *                   example: "Error updating session"
  */
 route.put(
-  '/Instructor_modify_Session_In_department',
+  "/Instructor_modify_Session_In_department",
+  authenticateJWT,
+  authorizeRoles("instructor", "superAdmin"),
   SessionController.Instructor_modify_Session_In_department
-)
+);
 
 /**
  * @swagger
@@ -273,9 +288,17 @@ route.put(
  *                   example: "Error retrieving sessions"
  */
 route.get(
-  '/department/:DepartmentId',
+  "/department/:DepartmentId",
+  authenticateJWT,
+  authorizeRoles("member", "instructor", "superAdmin"),
   SessionController.getSessionsByDepartment
-)
+);
+route.get(
+  "/all",
+  authenticateJWT,
+  authorizeRoles("superAdmin"),
+  SessionController.getSessionsForAdmin
+);
 /**
  * @swagger
  * /api/session/{id}:
@@ -324,7 +347,12 @@ route.get(
  *                   type: string
  *                   example: "Error in deleting session"
  */
-route.delete('/:id', SessionController.delete_Session_By_Instructor)
+route.delete(
+  "/:id",
+  authenticateJWT,
+  authorizeRoles("instructor", "superAdmin"),
+  SessionController.delete_Session_By_Instructor
+);
 
 /**
  * @swagger
@@ -388,6 +416,6 @@ route.delete('/:id', SessionController.delete_Session_By_Instructor)
  *                   type: string
  *                   example: "Error retrieving sessions"
  */
-route.get('/:instructorId', SessionController.getSessionsByInstructor)
+route.get("/:instructorId", SessionController.getSessionsByInstructor);
 
-module.exports = route
+module.exports = route;

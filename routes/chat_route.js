@@ -1,7 +1,7 @@
-const express = require('express')
-const controller = require('../controllers/chat_controller')
+const express = require("express");
+const controller = require("../controllers/chat_controller");
 
-const route = express.Router()
+const route = express.Router();
 /**
  * @swagger
  * /api/chats/:
@@ -55,7 +55,7 @@ const route = express.Router()
  *                   example: Les deux participants sont requis.
  */
 
-route.post('/', controller.addChat)
+route.post("/", controller.addChat);
 /**
  * @swagger
  * /api/chats/{instructorId}:
@@ -129,7 +129,7 @@ route.post('/', controller.addChat)
  *               type: "string"
  *               example: "Erreur lors de la récupération des chats : <message d'erreur>"
  */
-route.get('/:instructorId', controller.getChatsByInstructorId)
+route.get("/:instructorId", controller.getChatsByInstructorId);
 /**
  * @swagger
  * /api/chats/addMessage:
@@ -221,7 +221,7 @@ route.get('/:instructorId', controller.getChatsByInstructorId)
  *                 error:
  *                   type: string
  */
-route.post('/addMessage', controller.addMessage)
+route.post("/addMessage", controller.addMessage);
 
 /**
  * @swagger
@@ -329,7 +329,7 @@ route.post('/addMessage', controller.addMessage)
  *                   type: "string"
  *                   example: "Erreur lors de la récupération des messages : <message d'erreur>"
  */
-route.get('/getChat/:chatId', controller.getMessagesByChatId)
+route.get("/getChat/:chatId", controller.getMessagesByChatId);
 
 /**
  * @swagger
@@ -451,6 +451,6 @@ route.get('/getChat/:chatId', controller.getMessagesByChatId)
  *                   type: string
  *                   example: "Détail de l'erreur."
  */
-route.post('/addMessageByAdmin', controller.addMessageByAdmin)
+route.post("/addMessageByAdmin", controller.addMessageByAdmin);
 
-module.exports = route
+module.exports = route;
