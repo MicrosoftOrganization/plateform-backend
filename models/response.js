@@ -22,8 +22,8 @@ const responsesSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ["AWAITING FOR REVIEW", "APPROVED", "EDITED"],
-    default: "AWAITING FOR REVIEW", // Valeur par défaut
+    enum: ["AWAITING FOR REVIEW", "REVIEWED", "APPROVED", "EDITED"],
+    default: "AWAITING FOR REVIEW", 
     required: true,
   },
   createdAt: {
