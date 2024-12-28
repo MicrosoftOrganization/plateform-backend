@@ -58,7 +58,7 @@ const controller = {
         };
       }
       res
-        .cookie("Bearer", token, {
+        .cookie("token", token, {
           httpOnly: true,
           secure: false,
           sameSite: "lax",
