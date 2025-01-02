@@ -185,12 +185,12 @@ const controller = {
         .find({
           _id: { $in: departmentExists.sessions },
         })
-        .populate({
-          path: "Instructor",
-          select: "NomPrenom -_id -__t",
-          options: { sort: { createdAt: -1 } },
-        })
-        .sort({ createdAt: -1 })
+        // .populate({
+        //   path: "Instructor",
+        //   select: "NomPrenom -_id -__t",
+        //   options: { sort: { createdAt: -1 } },
+        // })
+        // .sort({ createdAt: -1 })
         .exec();
 
       // Modifier la structure des données pour correspondre à ce qui est demandé
@@ -198,7 +198,7 @@ const controller = {
         _id: session._id,
         Title: session.Title,
         Description: session.Description,
-        Instructor: session.Instructor.NomPrenom, // Récupérer le nom de l'instructeur
+        Instructor: 'session.Instructor.NomPrenom', // Récupérer le nom de l'instructeur
         Date: session.Date,
         Room: session.Room,
       }));

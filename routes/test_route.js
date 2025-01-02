@@ -66,8 +66,7 @@ const upload = multer({ storage: multer.memoryStorage() });
  */
 route.post(
   "/upload",
-  authenticateJWT,
-  authorizeRoles("superAdmin"),
+
   upload.single("file"),
   uploadController.uploadFile
 );
@@ -170,8 +169,6 @@ route.post(
  */
 route.post(
   "/save-instructor",
-  authenticateJWT,
-  authorizeRoles("superAdmin"),
   uploadController.saveFileInstructor
 );
 
