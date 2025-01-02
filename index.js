@@ -64,7 +64,7 @@ app.use(
 );
 
 app.get("/", (req, res) => {
-  res.send("Welcome to the backend!");
+  res.send("Welcome to the backend deployment!");
 });
 
 app.use("/api/instructor", Instructor);
